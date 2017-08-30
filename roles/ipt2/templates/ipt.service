@@ -1,0 +1,14 @@
+[Unit]
+Description=Start ipt
+After=syslog.target network.target
+[Service]
+User=root
+Environment=PATH='/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+Type=oneshot
+ExecStart=/root/scripts/ipt/ipt.sh start
+ExecStop=/root/scripts/ipt/ipt.sh stop
+ExecReload=/root/scripts/ipt/ipt.sh restart
+WorkingDirectory=/root/scripts/ipt
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target

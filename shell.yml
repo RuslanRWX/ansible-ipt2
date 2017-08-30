@@ -1,0 +1,20 @@
+---
+- hosts: $host
+  tasks:
+#    - shell: '/bin/echo "zabbix ALL=NOPASSWD: /usr/local/sbin/smartctl"  >> /usr/local/etc/sudoers'
+#    - shell: '/bin/echo "zabbix ALL=NOPASSWD: /etc/zabbix/io.sh" >> /usr/local/etc/sudoers'
+#     - shell: '/bin/echo "zabbix ALL=NOPASSWD: /etc/zabbix/smart.sh" >> /usr/local/etc/sudoers'
+#     - shell: '/bin/echo "zabbix ALL=NOPASSWD: /sbin/geom" >> /usr/local/etc/sudoers'
+    - shell: '/bin/cp /usr/local/etc/php.ini /usr/local/etc/php.ini.back'
+#    - shell: '/etc/zabbix/io.sh create'
+      when: ansible_distribution   == "FreeBSD"
+#  tasks:
+#     - shell: '/bin/echo "zabbix ALL=NOPASSWD: /usr/sbin/smart.sh"  >> /etc/sudoers'
+##    - shell: '/bin/echo "zabbix ALL=NOPASSWD: /etc/zabbix/smart.sh" >> /etc/sudoers'
+    - shell: '/bin/cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.back'
+      when: ansible_os_family   == "Debian"
+#  tasks:
+#     - shell: '/bin/echo "zabbix ALL=NOPASSWD: /usr/sbin/smart.sh"  >> /etc/sudoers'
+#    - shell: '/bin/echo "zabbix ALL=NOPASSWD: /usr/sbin/smartctl"  >> /etc/sudoers'
+#    - shell: '/bin/echo "zabbix ALL=NOPASSWD: /etc/zabbix/smart.sh" >> /etc/sudoers'
+#       when: ansible_distribution   == "CentOS"

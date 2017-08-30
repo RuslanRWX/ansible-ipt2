@@ -1,0 +1,7 @@
+- name: restart systemd
+  shell: systemctl daemon-reload
+  shell: systemctl enable ipt.service
+- name: restart ipt
+  shell: systemctl restart ipt.service || /root/scripts/ipt/iptd.sh restart
+ # when: ansible_distribution_version == "7.2"
+# and ansible_distribution == "RedHat" ) 

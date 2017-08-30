@@ -1,0 +1,19 @@
+ip_conntrack_ftp: '"NO"'
+ssh_ports: '"22"'
+connlimit_ssh: "5"
+www_ports: '"80","443","1500"'
+connlimit_www: "75"
+additional_tcp_ports: '"3306","21","25","26","110","143","465","587","993","995"'
+connlimit_add_tcp: "25"
+additional_udp_ports: '"53"'
+connlimit_add_udp: "25"
+AntiDDoS: "NO"
+TrueIPs: "YES"
+BadIPs: "YES"
+Bots: "YES"
+ICMP: "YES"
+iptimeout: "300"
+nettimeout: "300"
+specialrules: 'iptables -A OUTPUT -p tcp -m owner --uid-owner 93 -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 25 -j LOG --log-prefix "LOCAL_DROPPED_SPAM " --log-uid
+iptables -A OUTPUT -p tcp -m multiport --dports 25 -j DROP'
