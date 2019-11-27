@@ -17,3 +17,4 @@ nettimeout: "300"
 specialrules: 'iptables -A OUTPUT -p tcp -m owner --uid-owner 93 -j ACCEPT
 iptables -A OUTPUT -p tcp -m multiport --dports 25 -j LOG --log-prefix "LOCAL_DROPPED_SPAM " --log-uid
 iptables -A OUTPUT -p tcp -m multiport --dports 25 -j DROP'
+ALLOW_IP: "127.0.0.1\n127.0.0.2"

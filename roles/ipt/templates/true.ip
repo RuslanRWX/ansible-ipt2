@@ -1,0 +1,11 @@
+{% if ALLOW_IP is defined  %}
+{{ ALLOW_IP }}
+{% endif %}
+####### IPs
+# zabbix 
+185.151.247.112/32
+# Good guys 
+#w30
+185.151.245.30/32
+# b2my
+185.151.244.183/32

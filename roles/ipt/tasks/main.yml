@@ -1,0 +1,134 @@
+---
+## Create directories and install packegies
+
+- block:   
+    - name: Create /root/scripts directory  
+      file: 
+        path: /root/scripts
+        owner: root 
+        group: root
+        mode: 0755 
+        state: directory
+
+    - name: Create /root/scripts/ipt directory
+      file: 
+        path: /root/scripts/ipt
+        owner: root 
+        group: root
+        mode: 0755 
+        state: directory
+
+
+    - name: Install the `ipset` package
+      package:
+        name: ipset
+        state: latest
+
+    - name: Install the `fail2ban` package
+      package:
+        name: fail2ban
+        state: latest
+
+    - name: Grep Port 22022 
+      shell: "grep -e '^Port 22022$' /etc/ssh/sshd_config | wc -l" 
+      register: add_22022_port
+      changed_when: add_22022_port.stdout == 0
+
+    - name: Grep Port 22 
+      shell: "grep -e '^Port 22$' /etc/ssh/sshd_config | wc -l" 
+      register: add_22_port
+      changed_when: add_22_port.stdout == 0
+
+    - name: Add Port 22022
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        line: "Port 22022"
+      notify:
+      - restart sshd
+      when: add_22022_port.stdout == "0"
+
+    - name: Add Port 22
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        line: "Port 22"
+      notify:
+      - restart sshd
+      when: add_22_port.stdout == "0"
+  when: ansible_os_family == "RedHat" or  ansible_os_family == "Debian"
+
+- name: Check jail.conf config CentOS
+  template: src="jail.conf.CentOS" dest="/etc/fail2ban/jail.conf" owner="root" group="root"   mode=0755
+  notify:
+  - restart fail2ban
+  when: ansible_os_family == "RedHat"
+
+- name: Check jail.conf config Debian
+  template: src="jail.conf.Debian" dest="/etc/fail2ban/jail.conf" owner="root" group="root"   mode=0755
+  notify:
+  - restart fail2ban
+  when: ansible_os_family == "Debian" and ansible_distribution_major_version == '8'
+#- debug: msg="{{add_22022_port.stdout}}"
+
+################### 
+#  systemd 
+###################
+- name: Check ipt.service config
+  template: src='ipt.service' dest="/usr/lib/systemd/system/ipt.service" owner="root" group="root"   mode=0640
+  notify: 
+  - restart systemd
+  when: ansible_os_family == "RedHat"
+
+
+- name: Check ipt.service config
+  template: src='ipt.service' dest="/etc/systemd/system/ipt.service" owner="root" group="root"   mode=0640
+  notify: 
+  - restart systemd
+  when: ansible_os_family == "Debian"
+
+################### 
+#  ipt's scripts 
+###################
+
+- block:
+    - name: Check ipt.sh config
+      template: src="ipt.sh" dest="/root/scripts/ipt/ipt.sh" owner="root" group="root"   mode=0755
+
+    - name: Check iptd.sh config
+      template: src="iptd.sh" dest="/root/scripts/ipt/iptd.sh" owner="root" group="root"   mode=0755
+
+    - name: Check bad.ip config
+      template: src="bad.ip" dest="/root/scripts/ipt/bad.ip" owner="root" group="root"   mode=0640
+
+    - name: Check badnets.ip config
+      template: src="badnets.ip" dest="/root/scripts/ipt/badnets.ip" owner="root" group="root"   mode=0640
+
+    - name: Check google.bot.ip config
+      template: src="google.bot.ip" dest="/root/scripts/ipt/google.bot.ip" owner="root" group="root"   mode=0640
+
+    - name: Check trueip config
+      template: src="true.ip" dest="/root/scripts/ipt/true.ip" owner="root" group="root"   mode=0640
+
+    - name: Check truenets.ip config
+      template: src="truenets.ip" dest="/root/scripts/ipt/truenets.ip" owner="root" group="root"   mode=0640
+
+    - name: restart ipt
+      command: /bin/true
+      notify: 
+        - restart ipt
+#        - restart fail2ban
+#   when: restart.changed
+    # changed_when: True
+    
+
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"
+
+
+- name: restart fail2ban
+  command: /bin/true
+  notify: 
+    - restart fail2ban
+  when: ansible_os_family == "Debian" and ansible_distribution_major_version == '8'
+
+
+
+

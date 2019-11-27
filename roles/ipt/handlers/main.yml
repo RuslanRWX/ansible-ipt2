@@ -1,0 +1,13 @@
+- name: restart systemd
+  shell: systemctl daemon-reload
+- name: enable systemd
+  shell: systemctl enable ipt.service
+- name: restart ipt
+  shell: systemctl restart ipt.service
+- name: systemd enable fail2ban
+  shell: systemctl enable fail2ban.service
+- name: restart sshd
+  shell: systemctl restart sshd
+- name: restart fail2ban
+  shell: systemctl restart fail2ban
+
