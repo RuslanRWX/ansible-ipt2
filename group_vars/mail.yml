@@ -1,0 +1,10 @@
+ip_conntrack_ftp: '"NO"'
+SSH_PUB: "YES"
+ssh_ports: '"22022"'
+connlimit_ssh: "5"
+TrueIPs: "YES"
+BadIPs: "YES"
+ICMP: "YES"
+iptimeout: "300"
+nettimeout: "300"
+#ALLOW_IP: "127.0.0.1\n127.0.0.3"

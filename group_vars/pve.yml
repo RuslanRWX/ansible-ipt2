@@ -1,0 +1,11 @@
+SSH_PUB: "YES"
+ssh_ports: '"22022"'
+connlimit_ssh: "5"
+AntiDDoS: "NO"
+TrueIPs: "YES"
+BadIPs: "YES"
+Bots: "NO"
+ICMP: "YES"
+iptimeout: "300"
+nettimeout: "300"
+ALLOW_IP: "89.64.23.184"
