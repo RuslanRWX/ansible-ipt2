@@ -1,0 +1,13 @@
+---
+#- name: Play IPT, create your own iptables's rules 
+- hosts: "{{ hosts }}"
+  roles: 
+    - ipt
+  
+#  post_task:
+#    - name: restart ipt
+#      debug:
+#        msg: "a post task"
+#      changed_when: true
+#      notify: restart ipt
+              #

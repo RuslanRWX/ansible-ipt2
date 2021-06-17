@@ -1,0 +1,7 @@
+{% if ALLOW_IP is defined  %}
+{{ ALLOW_IP }}
+{% endif %}
+####### IPs
+# zabbix 
+10.0.0.1/32
+# Good guys 
